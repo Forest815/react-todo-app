@@ -11,6 +11,7 @@ import { twMerge } from "tailwind-merge";
 
 type Props = {
   todos: Todo[];
+  updateIsDone: (id: string, value: boolean) => void; // ◀◀ 追加
 };
 
 const num2star = (n: number): string => "★".repeat(4 - n);
@@ -46,12 +47,9 @@ const TodoList = (props: Props) => {
           <div className="flex items-baseline text-slate-700">
             <input
               type="checkbox"
-              checked={todo.isDone} // ◀◀ 注目
+              checked={todo.isDone}
+              onChange={(e) => props.updateIsDone(todo.id, e.target.checked)}
               className="mr-1.5 cursor-pointer"
-              onChange={() => {
-                // TODO: タスクの状態を変更する関数を実装
-                console.log(`タスクID ${todo.id} の状態を変更`);
-              }}
             />
             <FontAwesomeIcon icon={faFile} flip="horizontal" className="mr-1" />
             <div
