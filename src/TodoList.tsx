@@ -68,6 +68,11 @@ const TodoList = (props: Props) => {
               <div className={twMerge(todo.isDone && "line-through")}>
                 期限: {dayjs(todo.deadline).format("YYYY年M月D日 H時m分")}
               </div>
+              <input
+                type="checkbox"
+                checked={todo.isDone} // ◀◀ 注目
+                className="mr-1.5 cursor-pointer"
+              />
             </div>
           )}
         </div>
