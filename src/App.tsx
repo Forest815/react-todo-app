@@ -4,18 +4,31 @@ import { initTodos } from "./initTodos";
 import WelcomeMessage from "./WelcomeMessage";
 import TodoList from "./TodoList";
 import { v4 as uuid } from "uuid";
-import dayjs from "dayjs"; // ◀◀ 追加
+import dayjs from "dayjs";
+import { twMerge } from "tailwind-merge"; // ◀◀ 追加
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // ◀◀ 追加
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"; // ◀◀ 追加
 
 const App = () => {
   const [todos, setTodos] = useState<Todo[]>(initTodos);
   const [newTodoName, setNewTodoName] = useState("");
   const [newTodoPriority, setNewTodoPriority] = useState(3);
-  const [newTodoDeadline, setNewTodoDeadline] = useState<Date | null>(null); // ◀◀ 追加
+  const [newTodoDeadline, setNewTodoDeadline] = useState<Date | null>(null);
+  const [newTodoNameError, setNewTodoNameError] = useState("");
 
   const uncompletedCount = todos.filter((todo: Todo) => !todo.isDone).length;
 
+  // ▼▼ 追加
+  const isValidTodoName = (name: string): string => {
+    if (name.length < 2 || name.length > 32) {
+      return "2文字以上、32文字以内で入力してください";
+    } else {
+      return "";
+    }
+  };
+
   const updateNewTodoName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // あとでバリデーションなどの処理をここに追加する
+    setNewTodoNameError(isValidTodoName(e.target.value)); // ◀◀ 追加
     setNewTodoName(e.target.value);
   };
 
@@ -41,18 +54,24 @@ const App = () => {
   };
 
   const addNewTodo = () => {
+    // ▼▼ 編集
+    const err = isValidTodoName(newTodoName);
+    if (err !== "") {
+      setNewTodoNameError(err);
+      return;
+    }
     const newTodo: Todo = {
       id: uuid(),
       name: newTodoName,
       isDone: false,
       priority: newTodoPriority,
-      deadline: newTodoDeadline, // ◀◀ 追加
+      deadline: newTodoDeadline,
     };
     const updatedTodos = [...todos, newTodo];
     setTodos(updatedTodos);
     setNewTodoName("");
     setNewTodoPriority(3);
-    setNewTodoDeadline(null); // ◀◀ 追加
+    setNewTodoDeadline(null);
   };
 
   return (
@@ -68,19 +87,35 @@ const App = () => {
 
       <div className="mt-5 space-y-2 rounded-md border p-3">
         <h2 className="text-lg font-bold">新しいタスクの追加</h2>
-        <div className="flex items-center space-x-2">
-          <label className="font-bold" htmlFor="newTodoName">
-            名前
-          </label>
-          <input
-            id="newTodoName"
-            type="text"
-            value={newTodoName}
-            onChange={updateNewTodoName}
-            className="grow rounded-md border p-2"
-            placeholder="2文字以上、32文字以内で入力してください"
-          />
+        {/* 編集: ここから... */}
+        <div>
+          <div className="flex items-center space-x-2">
+            <label className="font-bold" htmlFor="newTodoName">
+              名前
+            </label>
+            <input
+              id="newTodoName"
+              type="text"
+              value={newTodoName}
+              onChange={updateNewTodoName}
+              className={twMerge(
+                "grow rounded-md border p-2",
+                newTodoNameError && "border-red-500 outline-red-500"
+              )}
+              placeholder="2文字以上、32文字以内で入力してください"
+            />
+          </div>
+          {newTodoNameError && (
+            <div className="ml-10 flex items-center space-x-1 text-sm font-bold text-red-500 ">
+              <FontAwesomeIcon
+                icon={faTriangleExclamation}
+                className="mr-0.5"
+              />
+              <div>{newTodoNameError}</div>
+            </div>
+          )}
         </div>
+        {/* ...ここまで */}
 
         <div className="flex gap-5">
           <div className="font-bold">優先度</div>
@@ -99,7 +134,6 @@ const App = () => {
           ))}
         </div>
 
-        {/* DateTimeUIの実装 ここから... */}
         <div className="flex items-center gap-x-2">
           <label htmlFor="deadline" className="font-bold">
             期限
@@ -116,12 +150,14 @@ const App = () => {
             className="rounded-md border border-gray-400 px-2 py-0.5"
           />
         </div>
-        {/* ...ここまで */}
 
         <button
           type="button"
           onClick={addNewTodo}
-          className="rounded-md bg-indigo-500 px-3 py-1 font-bold text-white hover:bg-indigo-600"
+          className={twMerge(
+            "rounded-md bg-indigo-500 px-3 py-1 font-bold text-white hover:bg-indigo-600",
+            newTodoNameError && "cursor-not-allowed opacity-50"
+          )}
         >
           追加
         </button>
