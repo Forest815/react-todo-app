@@ -29,6 +29,17 @@ const App = () => {
     setNewTodoDeadline(dt === "" ? null : new Date(dt));
   };
 
+  const updateIsDone = (id: string, value: boolean) => {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, isDone: value }; // スプレッド構文
+      } else {
+        return todo;
+      }
+    });
+    setTodos(updatedTodos);
+  };
+
   const addNewTodo = () => {
     const newTodo: Todo = {
       id: uuid(),

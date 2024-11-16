@@ -16,7 +16,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000, // デフォルトのポートを3000に設定
+    port: 3001, // デフォルトのポートを3001に設定
     strictPort: false,
     open: true,
   },
