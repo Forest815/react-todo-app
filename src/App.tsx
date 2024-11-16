@@ -90,6 +90,16 @@ const App = () => {
       </div>
       <TodoList todos={todos} updateIsDone={updateIsDone} />
 
+      <button
+        type="button"
+        onClick={removeCompletedTodos}
+        className={
+          "mt-5 rounded-md bg-red-500 px-3 py-1 font-bold text-white hover:bg-red-600"
+        }
+      >
+        完了済みのタスクを削除
+      </button>
+
       <div className="mt-5 space-y-2 rounded-md border p-3">
         <h2 className="text-lg font-bold">新しいタスクの追加</h2>
         {/* 編集: ここから... */}
@@ -165,15 +175,6 @@ const App = () => {
           )}
         >
           追加
-        </button>
-        <button
-          type="button"
-          onClick={removeCompletedTodos}
-          className={
-            "mt-5 rounded-md bg-red-500 px-3 py-1 font-bold text-white hover:bg-red-600"
-          }
-        >
-          完了済みのタスクを削除
         </button>
       </div>
     </div>
