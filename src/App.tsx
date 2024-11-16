@@ -53,6 +53,11 @@ const App = () => {
     setTodos(updatedTodos);
   };
 
+  const removeCompletedTodos = () => {
+    const updatedTodos = todos.filter((todo) => !todo.isDone);
+    setTodos(updatedTodos);
+  };
+
   const addNewTodo = () => {
     // ▼▼ 編集
     const err = isValidTodoName(newTodoName);
@@ -160,6 +165,15 @@ const App = () => {
           )}
         >
           追加
+        </button>
+        <button
+          type="button"
+          onClick={removeCompletedTodos}
+          className={
+            "mt-5 rounded-md bg-red-500 px-3 py-1 font-bold text-white hover:bg-red-600"
+          }
+        >
+          完了済みのタスクを削除
         </button>
       </div>
     </div>
