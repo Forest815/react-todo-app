@@ -1,4 +1,5 @@
 import React from "react";
+import TodoItem from "./TodoItem"; // ◀◀ 追加
 import { Todo } from "./types";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,7 +12,8 @@ import { twMerge } from "tailwind-merge";
 
 type Props = {
   todos: Todo[];
-  updateIsDone: (id: string, value: boolean) => void; // ◀◀ 追加
+  updateIsDone: (id: string, value: boolean) => void;
+  remove: (id: string) => void; // ◀◀ 追加
 };
 
 const num2star = (n: number): string => "★".repeat(4 - n);
@@ -75,6 +77,12 @@ const TodoList = (props: Props) => {
               <div className={twMerge(todo.isDone && "line-through")}>
                 期限: {dayjs(todo.deadline).format("YYYY年M月D日 H時m分")}
               </div>
+              <button
+                onClick={() => props.remove(todo.id)}
+                className="rounded-md bg-slate-200 px-2 py-1 text-sm font-bold text-white hover:bg-red-500"
+              >
+                削除
+              </button>
             </div>
           )}
         </div>
