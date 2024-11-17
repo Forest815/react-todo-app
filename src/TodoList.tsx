@@ -46,38 +46,26 @@ const TodoList = (props: Props) => {
               <FontAwesomeIcon icon={faFaceGrinWide} className="ml-1.5" />
             </div>
           )}
-          <div className="flex items-baseline justify-between text-slate-700">
-            <div className="flex items-baseline">
-              <input
-                type="checkbox"
-                checked={todo.isDone}
-                onChange={(e) => props.updateIsDone(todo.id, e.target.checked)}
-                className="mr-1.5 cursor-pointer"
-              />
-              <FontAwesomeIcon
-                icon={faFile}
-                flip="horizontal"
-                className="mr-1"
-              />
-              <div
-                className={twMerge(
-                  "text-lg font-bold",
-                  todo.isDone && "line-through decoration-2"
-                )}
-              >
-                {todo.name}
-              </div>
-              <div className="ml-2">優先度 </div>
-              <div className="ml-2 text-orange-400">
-                {num2star(todo.priority)}
-              </div>
-            </div>
-            <button
-              onClick={() => props.remove(todo.id)}
-              className="rounded-md bg-slate-200 px-2 py-1 text-sm font-bold text-white hover:bg-red-500"
+          <div className="flex items-baseline text-slate-700">
+            <input
+              type="checkbox"
+              checked={todo.isDone}
+              onChange={(e) => props.updateIsDone(todo.id, e.target.checked)}
+              className="mr-1.5 cursor-pointer"
+            />
+            <FontAwesomeIcon icon={faFile} flip="horizontal" className="mr-1" />
+            <div
+              className={twMerge(
+                "text-lg font-bold",
+                todo.isDone && "line-through decoration-2"
+              )}
             >
-              削除
-            </button>
+              {todo.name}
+            </div>
+            <div className="ml-2">優先度 </div>
+            <div className="ml-2 text-orange-400">
+              {num2star(todo.priority)}
+            </div>
           </div>
           {todo.deadline && (
             <div className="ml-4 flex items-center text-sm text-slate-500">
@@ -91,6 +79,12 @@ const TodoList = (props: Props) => {
               </div>
             </div>
           )}
+          <button
+            onClick={() => props.remove(todo.id)}
+            className="mt-2 rounded-md bg-slate-200 px-2 py-1 text-sm font-bold text-white hover:bg-red-500"
+          >
+            削除
+          </button>
         </div>
       ))}
     </div>
