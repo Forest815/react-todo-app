@@ -6,6 +6,7 @@ const repositoryName = "react-todo-app"; // ◀◀ 追加
 
 export default defineConfig({
   plugins: [react()],
+  // ▼▼ 追加 ここから ▼▼
   base: process.env.NODE_ENV === "production" ? `/${repositoryName}/` : "/",
   build: {
     rollupOptions: {
@@ -15,8 +16,9 @@ export default defineConfig({
       },
     },
   },
+  // ▲▲ 追加 ここまで ▲▲
   server: {
-    port: 3001, // デフォルトのポートを3001に設定
+    port: 3000,
     strictPort: false,
     open: true,
   },
