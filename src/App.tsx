@@ -43,6 +43,38 @@ const App = () => {
     }
   }, [todos, initialized]);
 
+  const [sortKey, setSortKey] = useState<
+    "priority" | "deadline" | "name" | null
+  >(null);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  useEffect(() => {
+    if (sortKey) {
+      const sortedTodos = [...todos].sort((a, b) => {
+        let aValue = a[sortKey];
+        let bValue = b[sortKey];
+
+        if (sortKey === "deadline") {
+          aValue = aValue || new Date(8640000000000000); // 最大の日付
+          bValue = bValue || new Date(8640000000000000);
+        } else if (sortKey === "priority") {
+          aValue = aValue ?? Infinity;
+          bValue = bValue ?? Infinity;
+        }
+
+        if (aValue < bValue) {
+          return sortOrder === "asc" ? -1 : 1;
+        } else if (aValue > bValue) {
+          return sortOrder === "asc" ? 1 : -1;
+        } else {
+          return 0;
+        }
+      });
+
+      setTodos(sortedTodos);
+    }
+  }, [sortKey, sortOrder, todos]);
+
   const uncompletedCount = todos.filter((todo: Todo) => !todo.isDone).length;
 
   // ▼▼ 追加
@@ -119,6 +151,33 @@ const App = () => {
           name="寝屋川タヌキ"
           uncompletedCount={uncompletedCount}
         />
+      </div>
+      <div className="mb-4 flex items-center space-x-4">
+        <label className="font-bold">ソート条件:</label>
+        <select
+          value={sortKey || ""}
+          onChange={(e) =>
+            setSortKey(
+              e.target.value as "priority" | "deadline" | "name" | null
+            )
+          }
+          className="rounded-md border px-2 py-1"
+        >
+          <option value="">なし</option>
+          <option value="priority">優先度</option>
+          <option value="deadline">期限</option>
+          <option value="name">名前</option>
+        </select>
+
+        <label className="font-bold">並び順:</label>
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
+          className="rounded-md border px-2 py-1"
+        >
+          <option value="asc">昇順</option>
+          <option value="desc">降順</option>
+        </select>
       </div>
       <TodoList todos={todos} updateIsDone={updateIsDone} remove={remove} />
       <button
