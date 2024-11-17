@@ -62,6 +62,9 @@ const App = () => {
           bValue = bValue ?? Infinity;
         }
 
+        if (aValue == null) aValue = "";
+        if (bValue == null) bValue = "";
+
         if (aValue < bValue) {
           return sortOrder === "asc" ? -1 : 1;
         } else if (aValue > bValue) {
