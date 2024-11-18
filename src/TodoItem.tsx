@@ -19,14 +19,14 @@ const TodoItem = (props: Props) => {
           className="mr-1.5 cursor-pointer"
         />
         {todo.name}
-      </div>
-      <div>
-        <button
-          onClick={() => props.remove(todo.id)}
-          className="rounded-md bg-slate-200 px-2 py-1 text-sm font-bold text-white hover:bg-red-500"
-        >
-          削除
-        </button>
+        <div>
+          <button
+            onClick={() => props.remove(todo.id)}
+            className="rounded-md bg-slate-200 px-2 py-1 text-sm font-bold text-white hover:bg-red-500"
+          >
+            削除
+          </button>
+        </div>
       </div>
     </div>
   );
