@@ -29,9 +29,9 @@ const getBorderColor = (subject: string): string => {
     case "国語":
       return "border-red-500";
     case "理科":
-      return "border-yellow-500";
-    case "社会":
       return "border-purple-500";
+    case "社会":
+      return "border-yellow-500";
     case "その他":
     default:
       return "border-gray-500";
