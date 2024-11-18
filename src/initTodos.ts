@@ -8,6 +8,7 @@ export const initTodos: Todo[] = [
     isDone: false,
     priority: 2,
     deadline: new Date(2024, 10, 2, 17, 30),
+    subject: "数学",
   },
   {
     id: uuid(),
@@ -15,6 +16,7 @@ export const initTodos: Todo[] = [
     isDone: true,
     priority: 3,
     deadline: null, // このTodoには期限を設定しない
+    subject: "その他",
   },
   {
     id: uuid(),
@@ -22,5 +24,6 @@ export const initTodos: Todo[] = [
     isDone: false,
     priority: 1,
     deadline: new Date(2024, 10, 11),
+    subject: "理科",
   },
 ];

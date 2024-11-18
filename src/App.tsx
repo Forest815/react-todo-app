@@ -14,6 +14,9 @@ const App = () => {
   const [newTodoName, setNewTodoName] = useState("");
   const [newTodoPriority, setNewTodoPriority] = useState(3);
   const [newTodoDeadline, setNewTodoDeadline] = useState<Date | null>(null);
+  const [newTodoSubject, setNewTodoSubject] = useState<
+    "数学" | "英語" | "国語" | "理科" | "社会" | "その他"
+  >("その他");
   const [newTodoNameError, setNewTodoNameError] = useState("");
 
   const [initialized, setInitialized] = useState(false);
@@ -41,7 +44,7 @@ const App = () => {
   }, [todos, initialized]);
 
   const [sortKey, setSortKey] = useState<
-    "priority" | "deadline" | "name" | null
+    "priority" | "deadline" | "name" | "subject" | null
   >(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -99,6 +102,12 @@ const App = () => {
     setNewTodoDeadline(dt === "" ? null : new Date(dt));
   };
 
+  const updateNewTodoSubject = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setNewTodoSubject(
+      e.target.value as "数学" | "英語" | "国語" | "理科" | "社会" | "その他"
+    );
+  };
+
   const updateIsDone = (id: string, value: boolean) => {
     const updatedTodos = todos.map((todo) => {
       if (todo.id === id) {
@@ -139,12 +148,14 @@ const App = () => {
       isDone: false,
       priority: newTodoPriority,
       deadline: newTodoDeadline,
+      subject: newTodoSubject,
     };
     const updatedTodos = [...todos, newTodo];
     setTodos(updatedTodos);
     setNewTodoName("");
     setNewTodoPriority(3);
     setNewTodoDeadline(null);
+    setNewTodoSubject("その他");
   };
 
   return (
@@ -162,7 +173,12 @@ const App = () => {
           value={sortKey || ""}
           onChange={(e) =>
             setSortKey(
-              e.target.value as "priority" | "deadline" | "name" | null
+              e.target.value as
+                | "priority"
+                | "deadline"
+                | "name"
+                | "subject"
+                | null
             )
           }
           className="rounded-md border px-2 py-1"
@@ -171,6 +187,7 @@ const App = () => {
           <option value="priority">優先度</option>
           <option value="deadline">期限</option>
           <option value="name">名前</option>
+          <option value="subject">教科</option>
         </select>
 
         <label className="font-bold">並び順:</label>
@@ -261,6 +278,25 @@ const App = () => {
             onChange={updateDeadline}
             className="rounded-md border border-gray-400 px-2 py-0.5"
           />
+        </div>
+
+        <div className="flex items-center gap-x-2">
+          <label htmlFor="subject" className="font-bold">
+            教科
+          </label>
+          <select
+            id="subject"
+            value={newTodoSubject}
+            onChange={updateNewTodoSubject}
+            className="rounded-md border px-2 py-1"
+          >
+            <option value="数学">数学</option>
+            <option value="英語">英語</option>
+            <option value="国語">国語</option>
+            <option value="理科">理科</option>
+            <option value="社会">社会</option>
+            <option value="その他">その他</option>
+          </select>
         </div>
 
         <button

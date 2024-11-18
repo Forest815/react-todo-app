@@ -20,6 +20,24 @@ type Props = {
 
 const num2star = (n: number): string => "★".repeat(4 - n);
 
+const getBorderColor = (subject: string): string => {
+  switch (subject) {
+    case "数学":
+      return "border-blue-500";
+    case "英語":
+      return "border-green-500";
+    case "国語":
+      return "border-red-500";
+    case "理科":
+      return "border-yellow-500";
+    case "社会":
+      return "border-purple-500";
+    case "その他":
+    default:
+      return "border-gray-500";
+  }
+};
+
 const TodoList = (props: Props) => {
   const [editingTodoId, setEditingTodoId] = useState<string | null>(null);
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
@@ -46,7 +64,9 @@ const TodoList = (props: Props) => {
     }
   };
 
-  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEditChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     if (editingTodo) {
       const { name, value } = e.target;
       setEditingTodo({
@@ -93,7 +113,8 @@ const TodoList = (props: Props) => {
         <div
           key={todo.id}
           className={twMerge(
-            "rounded-md border border-slate-500 bg-white px-3 py-2 drop-shadow-md",
+            "rounded-md border bg-white px-3 py-2 drop-shadow-md",
+            getBorderColor(todo.subject),
             todo.isDone && "bg-blue-50 opacity-50"
           )}
         >
@@ -208,6 +229,31 @@ const TodoList = (props: Props) => {
                 </div>
               </div>
             )
+          )}
+          {editingTodoId === todo.id ? (
+            <div className="ml-4 flex items-center text-sm text-slate-500">
+              <label htmlFor="subject" className="mr-2">
+                教科:
+              </label>
+              <select
+                name="subject"
+                value={editingTodo?.subject || "その他"}
+                onChange={handleEditChange}
+                className="rounded-md border border-gray-400 px-2 py-0.5"
+              >
+                <option value="数学">数学</option>
+                <option value="英語">英語</option>
+                <option value="国語">国語</option>
+                <option value="理科">理科</option>
+                <option value="社会">社会</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
+          ) : (
+            <div className="ml-4 flex items-center text-sm text-slate-500">
+              <label className="mr-2">教科:</label>
+              <div>{todo.subject}</div>
+            </div>
           )}
           {editError && editingTodoId === todo.id && (
             <div className="text-red-500">{editError}</div>
