@@ -186,7 +186,6 @@ const App = () => {
           <option value="">なし</option>
           <option value="priority">優先度</option>
           <option value="deadline">期限</option>
-          <option value="name">名前</option>
           <option value="subject">教科</option>
         </select>
 
